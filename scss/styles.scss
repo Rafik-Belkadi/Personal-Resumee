@@ -321,7 +321,14 @@ footer {
     font-size: 2em;
     font-weight: 300;
     margin: 0 0 30px 0;
-
+    
+    &:hover::after {
+        color: #3498db;
+        width: 100%;
+        transition-duration: 500ms;
+        
+    }
+    
     &:after {
         position: absolute;
         content: '';
@@ -332,6 +339,8 @@ footer {
         right: 0;
         margin: 0 auto;
         background: $base-color;
+        transition: 500ms;
+        -webkit-transition: 0.5s;
     }
 }
 
