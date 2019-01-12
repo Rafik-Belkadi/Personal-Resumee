@@ -321,14 +321,13 @@ footer {
     font-size: 2em;
     font-weight: 300;
     margin: 0 0 30px 0;
-    
+
     &:hover::after {
         color: #3498db;
         width: 100%;
         transition-duration: 500ms;
         
     }
-    
     &:after {
         position: absolute;
         content: '';
@@ -342,8 +341,8 @@ footer {
         transition: 500ms;
         -webkit-transition: 0.5s;
     }
+    
 }
-
 .background-alt {
     background: $background-alt;
 }
@@ -693,9 +692,7 @@ footer {
     }
 }
 
-#more-projects {
-    display: none;
-}
+
 
 /*
     -------------------------------
