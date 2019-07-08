@@ -40,7 +40,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
             let loader = new THREE.GLTFLoader();
-            loader.load('assets/carte fbx.glb', function (gltf) {
+            loader.load('assets/scene.gltf', function (gltf) {
                 car = gltf.scene.children[0]
                 scene.add(gltf.scene);
                 animate();
