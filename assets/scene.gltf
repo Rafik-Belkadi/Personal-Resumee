@@ -130,7 +130,10 @@
   "images": [
     {
       "uri": "textures/platinum.jpg"
-    }
+    },
+    {
+      "uri": "textures/platinum.jpg"
+    },
   ],
   "materials": [
     {
