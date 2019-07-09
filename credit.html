@@ -31,9 +31,7 @@
             camera.position.z = 1000;
             controls = new THREE.OrbitControls(camera);
             controls.addEventListener('change', renderer);
-            controls.scroll = false;
             hlight = new THREE.AmbientLight(0x404040, 10);
-            controls.maxDistance = 3000;  
             scene.add(hlight);
             
 
