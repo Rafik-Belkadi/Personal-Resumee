@@ -1,63 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+    
+    
+    <head> 
+        <style> 
+            canvas { display: block; }
+            html { overflow: hidden; background: #000; }
+        </style>
+    
+    </head>
+    <script> 
+    
+     
+const backgroundColor = 0x000000;
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>3D Model</title>
-</head>
-<style>
-    body {
-        width: 100%;
-        height: 100%;
-    }
-</style>
+/*////////////////////////////////////////*/
 
-<body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/105/three.min.js"></script>
-    <script src="GLTFLoader.js"></script>
-    <script src="OrbitControls.js"></script>
-    <script>
-        let scene, camera, renderer;
+var renderCalls = [];
+function render () {
+  requestAnimationFrame( render );
+  renderCalls.forEach((callback)=>{ callback(); });
+}
+render();
 
-        function init() {
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color( 0xFFEEEEEE );
-            camera = new THREE.PerspectiveCamera(8, window.innerWidth / window.innerHeight, 1,50000);
-            camera.rotation.y = 45 / 180 * Math.PI;
-            camera.position.x = 800;
-            camera.position.y = 100;
-            camera.position.z = 1000;
-            controls = new THREE.OrbitControls(camera);
-            controls.addEventListener('change', renderer);
-            hlight = new THREE.AmbientLight(0x404040, 10);
-            scene.add(hlight);
-            
+/*////////////////////////////////////////*/
+
+var scene = new THREE.Scene();
+
+var camera = new THREE.PerspectiveCamera( 80, window.innerWidth / window.innerHeight, 0.1, 800 );
+camera.position.set(5,5,5);
+
+var renderer = new THREE.WebGLRenderer( { antialias: true } );
+renderer.setPixelRatio( window.devicePixelRatio );
+renderer.setSize( window.innerWidth, window.innerHeight );
+renderer.setClearColor( backgroundColor );//0x );
+
+renderer.toneMapping = THREE.LinearToneMapping;
+renderer.toneMappingExposure = Math.pow( 0.94, 5.0 );
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+
+window.addEventListener( 'resize', function () {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize( window.innerWidth, window.innerHeight );
+}, false );
+
+document.body.appendChild( renderer.domElement);
+
+function renderScene(){ renderer.render( scene, camera ); }
+renderCalls.push(renderScene);
+
+/* ////////////////////////////////////////////////////////////////////////// */
+
+var controls = new THREE.OrbitControls( camera );
+
+controls.rotateSpeed = 0.3;
+controls.zoomSpeed = 0.9;
+
+controls.minDistance = 3;
+controls.maxDistance = 20;
+
+controls.minPolarAngle = 0; // radians
+controls.maxPolarAngle = Math.PI /2; // radians
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+
+renderCalls.push(function(){
+  controls.update()
+});
+
+
+/* ////////////////////////////////////////////////////////////////////////// */
+
+
+var light = new THREE.PointLight( 0xffffcc, 20, 200 );
+light.position.set( 4, 30, -20 );
+scene.add( light );
+
+var light2 = new THREE.AmbientLight( 0x20202A, 20, 100 );
+light2.position.set( 30, -10, 30 );
+scene.add( light2 );
+
+/* ////////////////////////////////////////////////////////////////////////// */
 
 
 
+var loader = new THREE.GLTFLoader();
+loader.crossOrigin = true;
+loader.load( 'https://s3-us-west-2.amazonaws.com/s.cdpn.io/39255/ladybug.gltf', function ( data ) {
 
-            renderer = new THREE.WebGLRenderer({
-                alpha: true
-            });
-            renderer.setSize(window.innerWidth, window.innerHeight);
+  
+    var object = data.scene;
+     object.position.set(0, -10, -0.75);
+//     object.rotation.set(Math.PI / -2, 0, 0);
 
-            document.body.appendChild(renderer.domElement);
-            let loader = new THREE.GLTFLoader();
-            loader.load('assets/scene.gltf', function (gltf) {
-                car = gltf.scene.children[0]
-                scene.add(gltf.scene);
-                animate();
-            });
-        }
+//     TweenLite.from( object.rotation, 1.3, {
+//       y: Math.PI * 2,
+//       ease: 'Power3.easeOut'
+//     });
 
-        function animate() {
-            renderer.render(scene, camera);
-            requestAnimationFrame(animate);
-        }
-        init();
+    TweenMax.from( object.position, 3, {
+      y: -8,
+      yoyo: true,
+      repeat: -1,
+      ease: 'Power2.easeInOut'
+    });
+    //object.position.y = - 95;
+    scene.add( object );
+  //, onProgress, onError );
+});
+
     </script>
-</body>
-
+<script>console.clear();</script>
+<script src="https://unpkg.com/three@0.87.1/build/three.js"></script>
+<script src="https://unpkg.com/three@0.87.1/examples/js/controls/OrbitControls.js"></script>
+<script src="https://unpkg.com/three@0.87.1/examples/js/loaders/GLTFLoader.js"></script>
+    
+    
 </html>
